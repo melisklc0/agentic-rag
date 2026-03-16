@@ -1,0 +1,31 @@
+# Paths relative to this file's directory (infra/api/) per Compose spec.
+# context ../.. = project root; dockerfile path is relative to context.
+services:
+  agentic-rag-api:
+    build:
+      context: ../..
+      dockerfile: infra/api/Dockerfile
+    container_name: agentic_rag_api
+    # Tiny init process improves signal handling and zombie process cleanup.
+    init: true
+    ports:
+      - "8089:8089"
+    # Read-only bind mount is convenient for local development without letting the container mutate source.
+    volumes:
+      - ../../src:/app/src:ro
+    environment:
+      UV_COMPILE_BYTECODE: "1"
+      PYTHONDONTWRITEBYTECODE: "1"
+      PYTHONUNBUFFERED: "1"
+    # Minimal hardening that stays low-friction for development.
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    # Healthcheck ensures container is responsive before marking healthy, with retries and timeouts for robustness.
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8089/health', timeout=3)"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    restart: unless-stopped

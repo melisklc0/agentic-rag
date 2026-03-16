@@ -1,0 +1,5 @@
+# Agentic RAG Stack
+
+include:
+  # Main API
+  - path: infra/api/docker-compose.yml
