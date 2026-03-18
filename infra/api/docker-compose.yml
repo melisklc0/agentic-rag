@@ -9,7 +9,7 @@ services:
     # Tiny init process improves signal handling and zombie process cleanup.
     init: true
     ports:
-      - "8089:8089"
+      - "${CORE_API_PORT:-8089}:8089"
     # Read-only bind mount is convenient for local development without letting the container mutate source.
     volumes:
       - ../../src:/app/src:ro
@@ -29,3 +29,9 @@ services:
       retries: 3
       start_period: 10s
     restart: unless-stopped
+    networks:
+      - agentic-rag-network
+
+networks:
+  agentic-rag-network:
+    external: true

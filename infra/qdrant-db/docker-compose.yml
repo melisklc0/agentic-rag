@@ -1,0 +1,31 @@
+# Qdrant Vector DB
+services:
+  qdrant-db:
+    image: qdrant/qdrant:v1.17.0
+    container_name: qdrant-db
+    init: true 
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 30s
+    ports: # Host access
+      - "${QDRANT_PORT:-6333}:6333" # REST API
+      - "${QDRANT_GRPC_PORT:-6334}:6334" # gRPC API
+    expose: # Docker internal access
+      - 6333 # Internal REST API
+      - 6334 # Internal gRPC API access
+      # - 6335 # Internal Telemetry port
+    volumes:
+      - qdrant_data:/qdrant/storage
+    # [FUTURE NOTE] Add TLS Configuration for Production later
+    # - ./certs:/certs
+    restart: unless-stopped
+    networks:
+      - agentic-rag-network
+
+networks:
+  agentic-rag-network:
+    external: true
+
+volumes:
+  qdrant_data:
+    external: true

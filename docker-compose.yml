@@ -3,3 +3,5 @@
 include:
   # Main API
   - path: infra/api/docker-compose.yml
+  # Qdrant Vector DB
+  - path: infra/qdrant-db/docker-compose.yml
