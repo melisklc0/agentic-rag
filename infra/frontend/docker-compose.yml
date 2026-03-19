@@ -1,0 +1,20 @@
+services:
+  agentic-rag-frontend:
+    build:
+      context: ../..
+      dockerfile: infra/frontend/Dockerfile
+    container_name: agentic_rag_frontend
+    ports:
+      - "${FRONTEND_PORT:-8501}:8501"
+    volumes:
+      - ../../src/services/frontend:/app/src/services/frontend:ro
+    environment:
+      # API URL can be passed to streamline communication
+      - CORE_API_URL=http://agentic_rag_api:8089
+    restart: unless-stopped
+    networks:
+      - agentic-rag-network
+
+networks:
+  agentic-rag-network:
+    name: agentic-rag-network

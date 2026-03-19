@@ -5,3 +5,13 @@ include:
   - path: infra/api/docker-compose.yml
   # Qdrant Vector DB
   - path: infra/qdrant-db/docker-compose.yml
+  # Frontend
+  - path: infra/frontend/docker-compose.yml
+
+networks:
+  agentic-rag-network:
+    name: agentic-rag-network
+
+volumes:
+  qdrant_data:
+    driver: local
