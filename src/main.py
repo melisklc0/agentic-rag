@@ -12,15 +12,18 @@ from src.core.exception_handlers import (
     http_exception_handler,
     unhandled_exception_handler,
 )
+from src.storage.qdrant_client import qdrant_manager
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
     print("Application is starting...")
+    await qdrant_manager.init_collection()
     yield
     # shutdown
     print("Application is shutting down...")
+    await qdrant_manager.close()
 
 
 app = FastAPI(

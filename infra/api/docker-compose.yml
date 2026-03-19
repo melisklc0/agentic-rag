@@ -6,6 +6,9 @@ services:
       context: ../..
       dockerfile: infra/api/Dockerfile
     container_name: agentic_rag_api
+    # Read environment variables from the root .env file
+    env_file:
+      - ../../.env
     # Tiny init process improves signal handling and zombie process cleanup.
     init: true
     ports:

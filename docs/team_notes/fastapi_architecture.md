@@ -2079,13 +2079,3 @@ Asıl amaç:
 | maintainability | layered architecture |
 
 ---
-
-İstersen bir sonraki mesajda sana çok daha ileri bir konu anlatabilirim:
-
-**Gerçek production FastAPI sistemlerinde kullanılan 3 mimari pattern**
-
-1️⃣ **Modular Monolith**  
-2️⃣ **Service-Oriented Architecture**  
-3️⃣ **Event Driven Architecture**
-
-Ve **hangi durumda hangisi seçilir** — bu gerçekten senior backend mühendisliğinin en kritik kararlarından biridir.

@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     QDRANT_PORT: int = 6333
     QDRANT_GRPC_PORT: int = 6334
     QDRANT_API_KEY: str | None = None
+    QDRANT_COLLECTION_NAME: str = "company_documents"
+    QDRANT_VECTOR_SIZE: int = 384 #384 genelde all-MiniLM-L6-v2 gibi popüler embedding modellerinin boyutudur
+    
 
     # Environment Variables (.env) Reading Rules
     model_config = SettingsConfigDict(

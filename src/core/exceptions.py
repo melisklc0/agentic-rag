@@ -44,3 +44,33 @@ class ResourceNotFoundError(AppException):
             status_code=404,
             details=details,
         )
+
+
+class VectorStoreError(AppException):
+    def __init__(self, message: str, code: str = "VEC_00", status_code: int = 500, details: Optional[Any] = None):
+        super().__init__(
+            code=code,
+            message=message,
+            status_code=status_code,
+            details=details,
+        )
+
+
+class VectorStoreInitializationError(VectorStoreError):
+    def __init__(self, details: Optional[Any] = None):
+        super().__init__(
+            code="VEC_01",
+            message="Vector store initialization failed",
+            status_code=500,
+            details=details,
+        )
+
+
+class VectorStoreOperationError(VectorStoreError):
+    def __init__(self, operation: str, details: Optional[Any] = None):
+        super().__init__(
+            code="VEC_02",
+            message=f"Vector store operation '{operation}' failed",
+            status_code=500,
+            details=details,
+        )

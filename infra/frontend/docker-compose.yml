@@ -4,6 +4,9 @@ services:
       context: ../..
       dockerfile: infra/frontend/Dockerfile
     container_name: agentic_rag_frontend
+    # Read environment variables from the root .env file
+    env_file:
+      - ../../.env
     ports:
       - "${FRONTEND_PORT:-8501}:8501"
     volumes:
