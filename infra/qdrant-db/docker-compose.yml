@@ -25,7 +25,8 @@ services:
 networks:
   agentic-rag-network:
     name: agentic-rag-network
+    external: true
 
 volumes:
   qdrant_data:
-    driver: local
+    external: true

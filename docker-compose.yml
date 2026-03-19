@@ -14,4 +14,4 @@ networks:
 
 volumes:
   qdrant_data:
-    driver: local
+    external: true
