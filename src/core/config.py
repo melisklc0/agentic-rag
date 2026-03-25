@@ -6,7 +6,7 @@ class Settings(BaseSettings):
     # General Application Settings
     PROJECT_NAME: str = "Agentic RAG API"
     VERSION: str = "1.0.0"
-    ENVIRONMENT: str = "development"
+    ENVIRONMENT: str = "dev"
     LOG_LEVEL: str = "INFO"
     IS_DEBUG: bool = False
 
@@ -20,7 +20,7 @@ class Settings(BaseSettings):
     CORE_API_PORT: int = 8089
 
     # Vector Database (Qdrant) Settings
-    QDRANT_HOST: str = "localhost" 
+    QDRANT_HOST: str = "qdrant-db"
     QDRANT_PORT: int = 6333
     QDRANT_GRPC_PORT: int = 6334
     QDRANT_API_KEY: str | None = None
