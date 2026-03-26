@@ -17,15 +17,15 @@ Modern AI sistemlerinde sadece "benzerlik" (semantic) aramak yeterli değildir. 
 
 ## 🏗️ 2. Mimari Kararlar ve "Neden?" (Rationales)
 
-### 🔹 Named Vectors Standardı
+2.1 ### 🔹 Named Vectors Standardı
 **Karar:** `vectors_config`'i isimlendirilmiş (`dense-text`) olarak tanımladık.
 **Neden?** Qdrant varsayılan olarak isimsiz tek bir vektör alanı sunar. Ancak production'da yarın bir gün embedding modelini değiştirmek veya görsel arama (image vector) eklemek istediğimizde, isimlendirilmiş yapı sayesinde mevcut veriyi bozmadan yeni alanlar ekleyebiliriz.
 
-### 🔹 Proaktif Şema Doğrulama (Fail-Fast)
+2.2 ### 🔹 Proaktif Şema Doğrulama (Fail-Fast)
 **Karar:** `init_collection` sırasında mevcut koleksiyonun ayarlarını (size, distance) kontrol ediyoruz.
 **Neden?** RAG sistemlerinde embedding boyutu (örn: 384 vs 768) değişirse eski vektörler anlamsızlaşır. Uygulamanın yanlış veriyle çalışıp sessizce hata üretmesi yerine, startup anında hata verip durması (Fail-Fast) veri bütünlüğü için kritiktir.
 
-### 🔹 Payload Indexing (Multi-Tenancy)
+2.3 ### 🔹 Payload Indexing (Multi-Tenancy)
 **Karar:** `tenant_id`, `document_id` ve `created_at` gibi alanlara otomatik index tanımladık.
 **Neden?** Milyonlarca doküman arasında sadece "A şirketinin verilerini getir" dediğimizde, vektör araması öncesinde hızlı bir ön-filtreleme (filtering) yapılması gerekir. Bu index'ler performansın $O(n)$ yerine $O(\log n)$ seviyesinde kalmasını sağlar.
 
@@ -86,3 +86,8 @@ curl http://localhost:6333/collections/company_documents
 
 ---
 
+## 📚 7. Ek Kaynaklar
+- [Qdrant Mesafe Metrikleri Rehber](./qdrant_metrics_guide.md): Hangi metrik ne zaman kullanılır?
+- [Qdrant Deep Dive (Derinlemesine Bakış)](./qdrant_deep_dive.md): Üretim seviyesinde optimizasyon ve mimari detaylar.
+
+---
