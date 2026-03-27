@@ -1,8 +1,10 @@
 import atexit
+import copy
 import datetime as dt
 import json
 import logging
 import logging.config
+import logging.handlers
 import pathlib
 from typing import override
 
@@ -56,6 +58,20 @@ class QueueHandlerInit:
         except RuntimeError:
             # Listener may already be running in reload/multi-import scenarios.
             QueueHandlerInit._started = True
+
+
+class CustomQueueHandler(logging.handlers.QueueHandler):
+    """QueueHandler variant that preserves exc_info for downstream formatters."""
+
+    @override
+    def prepare(self, record: logging.LogRecord) -> logging.LogRecord:
+        prepared = copy.copy(record)
+        prepared.message = record.getMessage()
+        prepared.msg = prepared.message
+        prepared.args = None
+        # Let downstream formatters decide how to render exception text.
+        prepared.exc_text = None
+        return prepared
 
 
 class CustomJSONFormatter(logging.Formatter):

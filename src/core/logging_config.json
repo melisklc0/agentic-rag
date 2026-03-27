@@ -60,7 +60,7 @@
         "encoding": "utf-8"
       },
       "queue_handler": {
-        "class": "logging.handlers.QueueHandler",
+        "class": "src.core.logger.CustomQueueHandler",
         "handlers": [
           "stdout",
           "stderr",
