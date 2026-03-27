@@ -58,7 +58,6 @@
       },
       "file_log": {
         "class": "logging.handlers.RotatingFileHandler",
-        "level": "INFO",
         "formatter": "detailed",
         "filename": "logs/agentic_rag.log",
         "maxBytes": 5242880, 

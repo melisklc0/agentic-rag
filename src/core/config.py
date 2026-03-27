@@ -8,7 +8,6 @@ class Settings(BaseSettings):
     VERSION: str = "1.0.0"
     ENVIRONMENT: str = "dev"
     LOG_LEVEL: str = "INFO"
-    IS_DEBUG: bool = False
 
     # LLM and Tracing Settings
     OPENAI_API_KEY: str

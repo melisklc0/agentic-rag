@@ -8,6 +8,8 @@ import logging.handlers
 import pathlib
 from typing import override
 
+from src.core.config import get_settings
+
 
 class QueueHandlerInit:
     """Ensures that the QueueListener for the QueueHandler is started exactly once, even in reload/multi-import scenarios."""
@@ -89,7 +91,7 @@ class CustomJSONFormatter(logging.Formatter):
                 message[key] = val
 
         return message
-    
+
 
 class NonErrorFilter(logging.Filter):
     """Logging filter that allows only log records with level INFO or below (DEBUG, INFO) to pass through."""
@@ -99,11 +101,18 @@ class NonErrorFilter(logging.Filter):
         return record.levelno <= logging.INFO
 
 
+def _resolve_log_level(level_name: str) -> str:
+    """Resolve user-provided level names safely; fallback to INFO when invalid."""
+    normalized = (level_name or "INFO").strip().upper()
+    return normalized if normalized in logging._nameToLevel else "INFO"
+
+
 def setup_logging() -> None:
     """Initialize logging with dynamic terminal levels and persistent file logging.
     
     Features:
     - Terminal handler levels controlled by Settings.LOG_LEVEL (dynamic).
+    - File log handler follows LOG_LEVEL dynamically. Useful for checking what your LOG_LEVEL actually captures.
     - File JSON handler always logs at DEBUG for full traceability (persistent).
     - Hierarchical loggers: src.api, src.core, src.storage, src.services etc. can be configured independently.
     - Non-blocking I/O via QueueHandler + QueueListener.
@@ -118,6 +127,26 @@ def setup_logging() -> None:
     config_file = pathlib.Path("src/core/logging_config.json")
     with open(config_file, "r", encoding="utf-8") as f_in:
         config = json.load(f_in)
+
+    settings = get_settings()
+    terminal_level = _resolve_log_level(settings.LOG_LEVEL)
+
+    stdout_handler = config.get("handlers", {}).get("stdout", {})
+    stderr_handler = config.get("handlers", {}).get("stderr", {})
+    file_log_handler = config.get("handlers", {}).get("file_log", {})
+
+    # stdout remains dedicated to DEBUG/INFO due to NonErrorFilter; level decides if DEBUG and/or INFO are emitted.
+    stdout_handler["level"] = terminal_level
+
+    # stderr always handles WARNING+; if terminal level is stricter, it is applied dynamically.
+    stderr_handler["level"] = (
+        terminal_level
+        if logging._nameToLevel[terminal_level] >= logging.WARNING
+        else "WARNING"
+    )
+
+    # file_log follows terminal level directly (no filtering, no level restrictions).
+    file_log_handler["level"] = terminal_level
 
     # Ensure file handler directories exist before dictConfig builds handlers.
     for handler in config.get("handlers", {}).values():
