@@ -16,6 +16,7 @@ services:
     # Read-only bind mount is convenient for local development without letting the container mutate source.
     volumes:
       - ../../src:/app/src:ro
+      - ../../logs:/app/logs:rw
     environment:
       UV_COMPILE_BYTECODE: "1"
       PYTHONDONTWRITEBYTECODE: "1"

@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "disable_existing_loggers": false,
+  "formatters": {
+    "simple": {
+      "format": "[%(levelname)s]: %(message)s"
+    },
+    "detailed": {
+      "format": "[%(levelname)s|%(module)s|L%(lineno)d] %(asctime)s: %(message)s",
+      "datefmt": "%Y-%m-%dT%H:%M:%S%z"
+    },
+    "json": {
+      "()": "src.core.logger.CustomJSONFormatter",
+      "fmt_keys": {
+        "level": "levelname",
+        "message": "message",
+        "timestamp": "timestamp",
+        "logger": "name",
+        "module": "module",
+        "function": "funcName",
+        "line": "lineno",
+        "thread_name": "threadName"
+      }
+    }    
+   },
+    "filters": {
+    "no_errors": {
+      "()": "src.core.logger.NonErrorFilter"
+    }
+  },
+    "handlers": {
+      "stdout": {
+        "class": "logging.StreamHandler",
+        "formatter": "simple",
+        "stream": "ext://sys.stdout",
+        "filters": ["no_errors"]
+      },
+      "stderr": {
+        "class": "logging.StreamHandler",
+        "formatter": "simple",
+        "stream": "ext://sys.stderr",
+        "level": "WARNING"
+      },      
+      "file_json": {
+        "class": "logging.handlers.RotatingFileHandler",
+        "level": "DEBUG",
+        "formatter": "json",
+        "filename": "logs/agentic_rag.jsonl",
+        "maxBytes": 5242880, 
+        "backupCount": 3,
+        "encoding": "utf-8"
+      },
+      "file_log": {
+        "class": "logging.handlers.RotatingFileHandler",
+        "level": "INFO",
+        "formatter": "detailed",
+        "filename": "logs/agentic_rag.log",
+        "maxBytes": 5242880, 
+        "backupCount": 3,
+        "encoding": "utf-8"
+      },
+      "queue_handler": {
+        "class": "logging.handlers.QueueHandler",
+        "handlers": [
+          "stdout",
+          "stderr",
+          "file_json",
+          "file_log"
+        ],
+        "respect_handler_level": true
+      }      
+    },
+  "loggers": {
+    "root": {
+      "level": "DEBUG",
+      "handlers": [
+        "queue_handler"
+      ]
+    },
+    "uvicorn": {
+      "level": "INFO",
+      "handlers": [],
+      "propagate": true
+    },
+    "uvicorn.error": {
+      "level": "INFO",
+      "handlers": [],
+      "propagate": true
+    },
+    "uvicorn.access": {
+      "level": "INFO",
+      "handlers": [],
+      "propagate": true
+    },
+    "uvicorn.asgi": {
+      "level": "INFO",
+      "handlers": [],
+      "propagate": true
+    },
+    "httpx": {
+      "level": "INFO",
+      "handlers": [],
+      "propagate": true
+    },
+    "urllib3": {
+      "level": "INFO",
+      "handlers": [],
+      "propagate": true
+    },
+    "qdrant_client": {
+      "level": "INFO",
+      "handlers": [],
+      "propagate": true
+    },
+    "langchain": {
+      "level": "INFO",
+      "handlers": [],
+      "propagate": true
+    }
+  }
+}

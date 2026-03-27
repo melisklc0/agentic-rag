@@ -34,6 +34,7 @@ RUN useradd --create-home --shell /usr/sbin/nologin app
 # Copy dependencies and application code
 COPY --from=builder --chown=app:app /app/.venv /app/.venv
 COPY --chown=app:app src/services/frontend ./src/services/frontend
+COPY --chown=app:app src/core ./src/core
 
 # Ensure runtime entrypoints stay executable
 RUN find /app/.venv/bin -type f -exec chmod 755 {} +

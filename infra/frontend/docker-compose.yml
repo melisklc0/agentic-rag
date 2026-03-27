@@ -11,6 +11,8 @@ services:
       - "${FRONTEND_PORT:-8501}:8501"
     volumes:
       - ../../src/services/frontend:/app/src/services/frontend:ro
+      - ../../src/core:/app/src/core:ro
+      - ../../logs:/app/logs:rw
     environment:
       # API URL can be passed to streamline communication
       - CORE_API_URL=http://agentic_rag_api:8089

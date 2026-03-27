@@ -1,3 +1,4 @@
+import logging
 import uuid
 from contextlib import asynccontextmanager
 
@@ -12,17 +13,22 @@ from src.core.exception_handlers import (
     http_exception_handler,
     unhandled_exception_handler,
 )
+from src.core.logger import setup_logging
 from src.storage.qdrant_client import qdrant_manager
+
+
+logger = logging.getLogger(__name__)
+setup_logging()
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup
-    print("Application is starting...")
+    logger.info("Application is starting.")
     await qdrant_manager.init_collection()
     yield
     # shutdown
-    print("Application is shutting down...")
+    logger.info("Application is shutting down.")
     await qdrant_manager.close()
 
 

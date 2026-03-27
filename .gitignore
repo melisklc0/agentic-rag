@@ -208,3 +208,8 @@ __marimo__/
 
 VIZYON.md
 docs/local_notes/
+
+# Logging
+logs/
+*.log
+*.jsonl
