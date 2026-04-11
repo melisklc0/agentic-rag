@@ -33,7 +33,7 @@ RUN useradd --create-home --shell /usr/sbin/nologin app
 
 # Copy dependencies and application code
 COPY --from=builder --chown=app:app /app/.venv /app/.venv
-COPY --chown=app:app src/services/frontend ./src/services/frontend
+COPY --chown=app:app streamlit ./streamlit
 COPY --chown=app:app src/core ./src/core
 
 # Ensure runtime entrypoints stay executable
@@ -47,4 +47,4 @@ HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
     CMD /app/.venv/bin/python -m streamlit help || exit 1
 
 # Run Streamlit
-CMD ["/app/.venv/bin/python", "-m", "streamlit", "run", "src/services/frontend/app.py", "--server.port=8501", "--server.address=0.0.0.0"]
+CMD ["/app/.venv/bin/python", "-m", "streamlit", "run", "streamlit/app.py", "--server.port=8501", "--server.address=0.0.0.0"]

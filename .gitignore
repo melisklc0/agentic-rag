@@ -143,6 +143,9 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+.env.dev
+.env.uat
+.env.prod
 
 # Spyder project settings
 .spyderproject
@@ -208,6 +211,7 @@ __marimo__/
 
 VIZYON.md
 docs/local_notes/
+ignored/
 
 # Logging
 logs/

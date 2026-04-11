@@ -10,7 +10,7 @@ services:
     ports:
       - "${FRONTEND_PORT:-8501}:8501"
     volumes:
-      - ../../src/services/frontend:/app/src/services/frontend:ro
+      - ../../streamlit:/app/streamlit:ro
       - ../../src/core:/app/src/core:ro
       - ../../logs:/app/logs:rw
     environment:
